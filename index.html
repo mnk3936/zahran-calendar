@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zahran Cafe & Restaurant · Content Calendar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF9F5;--card:#fff;--ink:#141413;--mute:#73726C;--line:#E8E6DC;--head:#F0EEE6;--headink:#141413;--poster:#D97757;--posterbg:#F8E4DB;--reel:#6A9BCC;--reelbg:#E1ECF6;--collab:#788C5D;--collabbg:#E6EBDD;--spl:#C46686;--splbg:#F6E0E7;--sel:#141413;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#262624;--card:#30302E;--ink:#FAF9F5;--mute:#A09F97;--line:#46443F;--head:#30302E;--headink:#FAF9F5;--posterbg:#4F3326;--reelbg:#2B3E50;--collabbg:#3A4430;--splbg:#4E2B38;--sel:#FAF9F5}}
+:root[data-theme="dark"]{--bg:#262624;--card:#30302E;--ink:#FAF9F5;--mute:#A09F97;--line:#46443F;--head:#30302E;--headink:#FAF9F5;--posterbg:#4F3326;--reelbg:#2B3E50;--collabbg:#3A4430;--splbg:#4E2B38;--sel:#FAF9F5}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Google Sans','Google Sans Flex','Product Sans','DM Sans',system-ui,sans-serif;line-height:1.4}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+header{background:var(--head);border:1px solid var(--line);color:var(--headink);border-radius:18px;padding:22px 24px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end}
+h1{margin:0;font-size:clamp(26px,5vw,42px);font-weight:500;letter-spacing:-.01em;line-height:1.1}
+header p{margin:6px 0 0;opacity:.8;font-size:14px}
+.stats{display:flex;gap:18px;font-size:13px}.stats b{display:block;font-size:24px;font-weight:700}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+.bar .sp{flex:1}
+button{font:inherit;cursor:pointer;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:7px 14px}
+button:focus-visible{outline:3px solid var(--poster);outline-offset:2px}
+button.on{background:var(--sel);color:var(--bg);border-color:var(--sel)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.month{font-size:22px;font-weight:700;min-width:150px;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dow{font-size:12px;color:var(--mute);text-align:center;padding:4px 0}
+.day{min-height:104px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:6px;text-align:left;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.day.empty{background:transparent;border-style:dashed;opacity:.5;cursor:default}
+.day.today{border-color:var(--poster);box-shadow:0 0 0 2px var(--poster)}
+.day .n{font-weight:700;font-size:14px}
+.chip{font-size:11px;line-height:1.2;border-radius:7px;padding:4px 6px;border-left:4px solid;overflow:hidden}
+.chip.Poster{background:var(--posterbg);border-color:var(--poster)}.chip.Reel{background:var(--reelbg);border-color:var(--reel)}.chip.Collab{background:var(--collabbg);border-color:var(--collab)}.chip.Spl{background:var(--splbg);border-color:var(--spl)}
+.chip i{display:block;font-style:normal;opacity:.75;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.day.sel{outline:3px solid var(--sel);outline-offset:1px}
+.detail{margin-top:16px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px}
+.detail h2{margin:0 0 4px;font-size:22px}
+.detail dl{display:grid;grid-template-columns:110px 1fr;gap:8px 12px;margin:14px 0 0}
+.detail dt{color:var(--mute)}.detail dd{margin:0;overflow-wrap:anywhere}
+.detail a{color:var(--poster)}
+.tag{display:inline-block;border-radius:999px;padding:2px 11px;font-size:13px;font-weight:600}
+.legend{font-size:13px;color:var(--mute);margin-top:12px}
+@media(max-width:640px){.day{min-height:70px;padding:4px}.chip i{display:none}.chip{font-size:10px;padding:3px}.wrap{padding:10px}.grid{gap:4px}.detail dl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div><h1>Zahran Cafe & Restaurant</h1><p>Instagram content calendar · Oct – Nov 2026</p></div>
+ <div class="stats" id="stats"></div>
+</header>
+<div class="bar" id="filters" role="group" aria-label="Filter by content type"></div>
+<div class="bar">
+ <button id="prev" aria-label="Previous month">‹ Prev</button><div class="month" id="mlabel"></div><button id="next" aria-label="Next month">Next ›</button>
+ <span class="sp"></span><button id="todayBtn">Jump to today</button>
+</div>
+<div class="grid" id="dows"></div>
+<div class="grid" id="grid" style="margin-top:6px"></div>
+<div class="detail" id="detail"></div>
+<p class="legend">Click any day to see its details. Days with a ✓ already have the finished post ready.</p>
+</div>
+<script>
+const IG=id=>'https://www.instagram.com/p/'+id+'/';
+const D=[
+["2026-10-02","Poster","Spl Day","Gandhijayanti","",1],
+["2026-10-04","Reel","Collab","Collab","",0],
+["2026-10-06","Poster","Menu","Menu / Best seller","DdlAIO8kzoX",0],
+["2026-10-08","Reel","Ambiance / Crowds","Concept","DdTNsWmkY-h",0],
+["2026-10-10","Poster","Customer Review (Google Reviews)","Concept","Dbah_vfgKSm",0],
+["2026-10-12","Poster","Authenticity","Concept","",1],
+["2026-10-14","Reel","Location Focused","Easy Accessible for Travellers","DavGPI6g6Ft",0],
+["2026-10-16","Poster","Flavourful","Different Item Alfam","DZJ87VHEgmQ",0],
+["2026-10-18","Reel","Collab","Collab","",0],
+["2026-10-20","Poster","Film Dialogues","Trending / Concept","DU-hAKACcdq",0],
+["2026-10-22","Reel","Trending Dialogues","Concept","DVa36hAilXB",0],
+["2026-10-24","Poster","Ambiance / Crowds","Create the Happiest face of customer","DdfwYzljO_E",0],
+["2026-10-26","Reel","Film Dialogues","Share Intent Based","DZrtfFUzF7T",0],
+["2026-10-28","Poster","Authenticity","For Juices","",1],
+["2026-10-29","Reel","Collab","Collab","",0],
+["2026-10-30","Poster","Trending / Concept","","",1],
+["2026-10-31","Poster","Kitchen Prep","Trending / Concept","Db-23iDClwj",0],
+["2026-11-01","Reel","Collab","Collab","",0],
+["2026-11-03","Reel","Film Dialogues","Share Intent","",0],
+["2026-11-05","Reel","Concept","Concept","",0]
+].map(([d,t,p,c,r,ok])=>({d,t,p,c,r,ok,k:p==="Spl Day"?"Spl":(p==="Collab"?"Collab":t)}));
+const byDate=Object.fromEntries(D.map(x=>[x.d,x]));
+const KINDS={Poster:"Poster",Reel:"Reel",Collab:"Collab",Spl:"Special day"};
+const CV={Poster:["--poster","--posterbg"],Reel:["--reel","--reelbg"],Collab:["--collab","--collabbg"],Spl:["--spl","--splbg"]};
+const MN=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const TODAY="2026-10-02";
+let y=2026,m=9,filter="All",sel=TODAY;
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,"0");
+$("dows").innerHTML=DN.map(d=>`<div class="dow">${d}</div>`).join("");
+function stats(){
+ const c=k=>D.filter(x=>x.t===k).length;
+ $("stats").innerHTML=`<div><b>${D.length}</b>planned</div><div><b>${c("Poster")}</b>posters</div><div><b>${c("Reel")}</b>reels</div><div><b>${D.filter(x=>x.ok).length}</b>ready</div>`;
+}
+function filters(){
+ const opts=["All",...Object.keys(KINDS)];
+ $("filters").innerHTML=opts.map(k=>`<button class="${filter===k?'on':''}" data-k="${k}">${k==="All"?"":`<span class="dot" style="background:var(${CV[k][0]})"></span>`}${k==="All"?"All":KINDS[k]}</button>`).join("");
+ $("filters").querySelectorAll("button").forEach(b=>b.onclick=()=>{filter=b.dataset.k;filters();grid()});
+}
+function grid(){
+ $("mlabel").textContent=MN[m]+" "+y;
+ const first=new Date(y,m,1).getDay(),len=new Date(y,m+1,0).getDate();
+ let h="";
+ for(let i=0;i<first;i++)h+=`<div class="day empty"></div>`;
+ for(let d=1;d<=len;d++){
+  const key=`${y}-${pad(m+1)}-${pad(d)}`,e=byDate[key];
+  const show=e&&(filter==="All"||e.k===filter);
+  h+=`<button class="day${key===TODAY?' today':''}${key===sel?' sel':''}" data-d="${key}" aria-label="${d} ${MN[m]}${e?': '+e.t+', '+e.p:''}"><span class="n">${d}</span>${show?`<span class="chip ${e.k}"><b>${e.t}${e.ok?' ✓':''}</b><i>${e.p}</i></span>`:""}</button>`;
+ }
+ $("grid").innerHTML=h;
+ $("grid").querySelectorAll("button.day").forEach(b=>b.onclick=()=>{sel=b.dataset.d;grid();detail()});
+}
+function detail(){
+ const [yy,mm,dd]=sel.split("-").map(Number),dt=new Date(yy,mm-1,dd),e=byDate[sel];
+ const title=`${DN[dt.getDay()]}, ${dd} ${MN[mm-1]} ${yy}`;
+ if(!e){$("detail").innerHTML=`<h2>${title}</h2><p style="color:var(--mute);margin:6px 0 0">Nothing is scheduled for this day.</p>`;return}
+ const c=CV[e.k];
+ $("detail").innerHTML=`<h2>${title}</h2><span class="tag" style="background:var(${c[1]});border:1.5px solid var(${c[0]})">${e.t}</span>
+ <dl><dt>Content pillar</dt><dd>${e.p}</dd><dt>Content</dt><dd>${e.c||"—"}</dd>
+ <dt>Reference</dt><dd>${e.r?`<a href="${IG(e.r)}" target="_blank" rel="noopener">View Instagram reference</a>`:"None added"}</dd>
+ <dt>Status</dt><dd>${e.ok?"✓ Final post ready":"Planned"}</dd></dl>`;
+}
+$("prev").onclick=()=>{m--;if(m<0){m=11;y--}grid()};
+$("next").onclick=()=>{m++;if(m>11){m=0;y++}grid()};
+$("todayBtn").onclick=()=>{y=2026;m=9;sel=TODAY;grid();detail()};
+stats();filters();grid();detail();
+</script>
+</body>
+</html>
