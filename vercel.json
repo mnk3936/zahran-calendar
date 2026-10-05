@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/", "has": [{ "type": "host", "value": "admin.thynkculture.com" }], "destination": "/admin/index.html" }
-  ],
   "headers": [
     { "source": "/admin/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
   ]
